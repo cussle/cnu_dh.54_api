@@ -74,37 +74,45 @@ router.post('/api/post/nodejs-api', function(req, res) {
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
   } else if(inputType == "lib") { // 도서관 JSON
+    var tempList = [];
+    for(var i = 0; i < 9; i++) {
+      tempList[i] = {
+        "imageTitle": {
+          "title": ulList.lib.name_[i],
+          "description": getTime() + " 기준"
+        },
+        "itemList": [
+            {
+                "title": "운영방식",
+                "description": ulList.lib.status_[i]
+            },
+            {
+                "title": "전체좌석",
+                "description": ulList.lib.entire_[i]
+            },
+            {
+                "title": "잔여좌석",
+                "description": ulList.lib.remain_[i]
+            },
+            {
+                "title": "사용율",
+                "description": ulList.lib.percent_[i]
+            }
+        ]
+      }
+    }
+
     res.status(200).json({
       "version": "2.0",
       "template": {
-          "outputs": [
-              {
-                  "itemCard": {
-                      "imageTitle": {
-                          "title": ulList.lib.name_[0],
-                          "description": getTime() + " 기준"
-                      },
-                      "itemList": [
-                          {
-                              "title": "운영방식",
-                              "description": ulList.lib.status_[0]
-                          },
-                          {
-                              "title": "전체좌석",
-                              "description": ulList.lib.entire_[0]
-                          },
-                          {
-                              "title": "잔여좌석",
-                              "description": ulList.lib.remain_[0]
-                          },
-                          {
-                              "title": "사용율",
-                              "description": ulList.lib.percent_[0]
-                          }
-                      ]
-                  }
-              }
-          ]
+        "outputs": [
+          {
+            "carousel": {
+              "type": "itemCard",
+              "items": tempList
+            }
+          }
+        ]
       }
     });
   } else if(inputType == "bus") { // 버스 JSON
