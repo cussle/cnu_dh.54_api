@@ -30,7 +30,7 @@ const getHtml = async () => {
         ulList.lib.remain_[i] = $(element).find("td.clicker_align_right.clicker_font_bold > div").text().replace(/^\s+|\s+$/gm, "");
         ulList.lib.percent_[i] = $(element).find("td:nth-child(4) > div > span > b").text().replace(/^\s+|\s+$/gm, "");
         ulList.lib.status_[i] = $(element).find("td:nth-child(5) > span").text().replace(/^\s+|\s+$/gm, "");
-        if(ulList.lib.status_[i] == '') ulList.lib.status_[i] = '운영중';
+        if(ulList.lib.status_[i] == '') ulList.lib.status_[i] = '예약 필요';
       }
     });
   } catch (error) {
@@ -38,6 +38,23 @@ const getHtml = async () => {
   }
 };
 getHtml();
+
+function getTime() {
+  let today = new Date();
+  return [today.getFullYear(),
+  "-",
+  ('0' + (today.getMonth() + 1)).slice(-2),
+  "-",
+  ('0' + today.getDate()).slice(-2),
+  "-",
+  " ",
+  ('0' + today.getHours()).slice(-2),
+  ":",
+  ('0' + today.getMinutes()).slice(-2),
+  ":",
+  ('0' + today.getSeconds()).slice(-2)
+  ].join("");
+}
 
 
 /* GET home page. */
@@ -51,6 +68,11 @@ router.get('/api/get/nodejs-api', function(req, res) {
 
 router.post('/api/post/nodejs-api', function(req, res) {
   var inputType = req.body.action.detailParams.inputType.value;
+
+  getHtml();
+
+
+
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
   } else if(inputType == "lib") { // 도서관 JSON
@@ -59,8 +81,29 @@ router.post('/api/post/nodejs-api', function(req, res) {
       "template": {
           "outputs": [
               {
-                  "simpleText": {
-                      "text": ulList.lib.name_[0]
+                  "itemCard": {
+                      "imageTitle": {
+                          "title": ulList.lib.name_[0],
+                          "description": getTime() + " 기준"
+                      },
+                      "itemList": [
+                          {
+                              "title": "운영방식",
+                              "description": ulList.lib.status_
+                          },
+                          {
+                              "title": "전체좌석",
+                              "description": ulList.lib.entire_
+                          },
+                          {
+                              "title": "잔여좌석",
+                              "description": ulList.lib.remain_
+                          },
+                          {
+                              "title": "사용율",
+                              "description": ulList.lib.percent_
+                          }
+                      ]
                   }
               }
           ]
@@ -70,8 +113,11 @@ router.post('/api/post/nodejs-api', function(req, res) {
     res.status(200).json(ulList.bus);
   } else {
     res.status(200).json({
-      "main_title" : "충남대학교 총학생회 챗봇 api",
-      "input" : "all / lib / bus"
+      "version": "2.0",
+      "data": {
+        "main_title" : "충남대학교 총학생회 챗봇 api",
+        "input" : "all / lib / bus"
+      }
     });
   }
 });
