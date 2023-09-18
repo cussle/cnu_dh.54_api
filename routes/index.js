@@ -52,7 +52,8 @@ router.get('/api/get/nodejs-api', function(req, res) {
 
 router.post('/api/post/nodejs-api', function(req, res) {
   res.status(200).json({
-    "message" : "hello post api nodejs-api"
+    "message" : req.intent.id,
+    "test" : "TEST"
   });
 });
 
