@@ -39,8 +39,9 @@ const getHtml = async () => {
 };
 getHtml();
 
+const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
 function getTime() {
-  let today = new Date();
+  let today = new Date(utc + KR_TIME_DIFF);
   return [today.getFullYear(),
   "-",
   ('0' + (today.getMonth() + 1)).slice(-2),
