@@ -52,7 +52,7 @@ router.get('/api/get/nodejs-api', function(req, res) {
 
 router.post('/api/post/nodejs-api', function(req, res) {
   res.status(200).json({
-    "message" : req.intent.id,
+    "message" : req.body.intent.id,
     "test" : "TEST"
   });
 });
