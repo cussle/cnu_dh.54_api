@@ -33,11 +33,6 @@ const getHtml = async () => {
         if(ulList.lib.status_[i] == '') ulList.lib.status_[i] = '운영중';
       }
     });
-    // console.log("bodyList : ", ulList.lib.name_);
-    // console.log("bodyList : ", ulList.lib.entire_);
-    // console.log("bodyList : ", ulList.lib.remain_);
-    // console.log("bodyList : ", ulList.lib.percent_);
-    // console.log("bodyList : ", ulList.lib.status_);
   } catch (error) {
     console.error(error);
   }
@@ -59,7 +54,18 @@ router.post('/api/post/nodejs-api', function(req, res) {
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
   } else if(inputType == "lib") { // 도서관 JSON
-    res.status(200).json(ulList.lib);
+    res.status(200).json({
+      "version": "2.0",
+      "template": {
+          "outputs": [
+              {
+                  "simpleText": {
+                      "text": ulList.lib.name_[0]
+                  }
+              }
+          ]
+      }
+    });
   } else if(inputType == "bus") { // 버스 JSON
     res.status(200).json(ulList.bus);
   } else {
