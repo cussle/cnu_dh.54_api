@@ -71,8 +71,6 @@ router.post('/api/post/nodejs-api', function(req, res) {
 
   getHtml();
 
-
-
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
   } else if(inputType == "lib") { // 도서관 JSON
@@ -89,19 +87,19 @@ router.post('/api/post/nodejs-api', function(req, res) {
                       "itemList": [
                           {
                               "title": "운영방식",
-                              "description": ulList.lib.status_
+                              "description": ulList.lib.status_[0]
                           },
                           {
                               "title": "전체좌석",
-                              "description": ulList.lib.entire_
+                              "description": ulList.lib.entire_[0]
                           },
                           {
                               "title": "잔여좌석",
-                              "description": ulList.lib.remain_
+                              "description": ulList.lib.remain_[0]
                           },
                           {
                               "title": "사용율",
-                              "description": ulList.lib.percent_
+                              "description": ulList.lib.percent_[0]
                           }
                       ]
                   }
