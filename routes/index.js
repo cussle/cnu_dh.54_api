@@ -39,8 +39,10 @@ const getHtml = async () => {
 };
 getHtml();
 
-const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
 function getTime() {
+  let curr = new Date();
+  let utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);
+  let KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   let today = new Date(utc + KR_TIME_DIFF);
   return [today.getFullYear(),
   "-",
@@ -60,7 +62,7 @@ function getTime() {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express' + "\n" + getTime()});
 });
 
 router.get('/api/get/nodejs-api', function(req, res) {
