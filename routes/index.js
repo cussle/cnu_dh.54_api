@@ -55,7 +55,7 @@ router.get('/api/get/nodejs-api', function(req, res) {
 });
 
 router.post('/api/post/nodejs-api', function(req, res) {
-  let inputType = req.body.detailParams.inputType.value;
+  var inputType = req.body.detailParams.inputType.value;
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
   } else if(inputType == "lib") { // 도서관 JSON
