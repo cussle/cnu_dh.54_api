@@ -55,11 +55,12 @@ router.get('/api/get/nodejs-api', function(req, res) {
 });
 
 router.post('/api/post/nodejs-api', function(req, res) {
-  if(req.body.inputType == "all") { // 모든 JSON
+  let inputType = req.body.detailParams.inputType.value;
+  if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
-  } else if(req.body.inputType == "lib") { // 도서관 JSON
+  } else if(inputType == "lib") { // 도서관 JSON
     res.status(200).json(ulList.lib);
-  } else if(req.body.inputType == "bus") { // 버스 JSON
+  } else if(inputType == "bus") { // 버스 JSON
     res.status(200).json(ulList.bus);
   } else {
     res.status(200).json({
