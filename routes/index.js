@@ -257,31 +257,13 @@ router.post('/api/post/nodejs-api', function(req, res) {
     res.status(200).json({
       "version": "2.0",
       "template": {
-        "outputs": [
-          {
-            "carousel": {
-              "type": "textCard",
-              "items": [{
-                "textCard": {
-                  "text": ["[ " + ulList.bus_list[k] + " ]",
-                  "\n# 운행대기",
-                  "\n# 운행중",
-                  "\n# 운행종료",
-                  ].join("\n")
-                }
-              },
+          "outputs": [
               {
-                "textCard": {
-                  "text": ["[ " + ulList.bus_list[k] + " ]",
-                  "\n# 운행대기",
-                  "\n# 운행중",
-                  "\n# 운행종료",
-                  ].join("\n")
-                }
-              }]
-            }
-          }
-        ]
+                  "simpleText": {
+                      "text": "간단한 텍스트 요소입니다."
+                  }
+              }
+          ]
       }
     });
 
