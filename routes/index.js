@@ -218,7 +218,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
 
       var tempBusMsg = "[" + tempBusInfor[0] + ":" + tempBusInfor[1] + "] ";
       if(elapsedMin < -60) continue;
-      else if(elapsedMSec < -30) {
+      else if(elapsedMin < -30) {
         tempBusMsg += elapsedMin + "분 전 운행종료";
         tempBusEnd.push(tempBusMsg);
       } else if(elapsedMin < 0) {
@@ -233,9 +233,9 @@ router.post('/api/post/nodejs-api', function(req, res) {
         tempBusWait.push(tempBusMsg);
       }
 
-      if(tempBusWait.length == 0) tempBusWait.push("당일 운행 예정인 버스가 없습니다.");
-      if(tempBusAct.length == 0) tempBusAct.push("운행중인 버스가 없습니다.");
-      if(tempBusEnd.length == 0) tempBusEnd.push("30분 이내 운행종료된 버스가 없습니다.");
+      if(tempBusWait.length < 1) tempBusWait.push("당일 운행 예정인 버스가 없습니다.");
+      if(tempBusAct.length < 1) tempBusAct.push("운행중인 버스가 없습니다.");
+      if(tempBusEnd.length < 1) tempBusEnd.push("30분 이내 운행종료된 버스가 없습니다.");
     }
 
     
