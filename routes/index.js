@@ -104,22 +104,22 @@ function sleep(ms) {
 }
 
 /* GET home page. */
-var tempBusRes = [];
-for(var i = 0; i < ulList.bus["A-1"].length; i++) {
-  var tempBusInfor = ulList.bus["A-1"][i].split(":");
-  var tempTimeInfor = getTodayTime().split(":");
-  var tempDateInfor = getTodayDate().split("-");
-  var date1 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempTimeInfor[0], tempTimeInfor[1]);
-  var date2 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempBusInfor[0], tempBusInfor[1]);
-  var elapsedMSec = date2.getTime() - date1.getTime(); 
-  var elapsedMin = elapsedMSec / 1000 / 60;
-  tempBusRes.push(ulList.bus["A-1"][i] + "\ndate1 - " + date1  + "\ndate2 - " + date2  + "\ndiff - " + minuteToHour(elapsedMin) + "\n");
-}
+// var tempBusRes = [];
+// for(var i = 0; i < ulList.bus["A-1"].length; i++) {
+//   var tempBusInfor = ulList.bus["A-1"][i].split(":");
+//   var tempTimeInfor = getTodayTime().split(":");
+//   var tempDateInfor = getTodayDate().split("-");
+//   var date1 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempTimeInfor[0], tempTimeInfor[1]);
+//   var date2 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempBusInfor[0], tempBusInfor[1]);
+//   var elapsedMSec = date2.getTime() - date1.getTime(); 
+//   var elapsedMin = elapsedMSec / 1000 / 60;
+//   tempBusRes.push(ulList.bus["A-1"][i] + "\ndate1 - " + date1  + "\ndate2 - " + date2  + "\ndiff - " + minuteToHour(elapsedMin) + "\n");
+// }
 
 router.get('/', function(req, res, next) {
-  // res.render('index', { title: 'Express' + "\n" + getToday()});
-  res.writeHead(200, {'Content-Type' : 'text/plain'});
-  res.end(tempBusRes.join("\n"));
+  res.render('index', { title: 'Express' + "\n" + getToday()});
+  // res.writeHead(200, {'Content-Type' : 'text/plain'});
+  // res.end(tempBusList.join("\n"));
 });
 
 router.get('/api/get/nodejs-api', function(req, res) {
@@ -204,13 +204,13 @@ router.post('/api/post/nodejs-api', function(req, res) {
     });
   } else if(inputType == "bus") { // 버스 JSON
     var tempBusList = [];
-    for(var k = 0; k < ulList.bus_list.length; k++) {
+    for(var k = 0; k < ulList.bus.bus_list.length; k++) {
       var tempBusWait = [];
       var tempBusAct = [];
       var tempBusEnd = [];
 
-      for(var i = 0; i < ulList.bus[ulList.bus_list[k]].length; i++) {
-        var tempBusInfor = ulList.bus[ulList.bus_list[k]][i].split(":");
+      for(var i = 0; i < ulList.bus[ulList.bus.bus_list[k]].length; i++) {
+        var tempBusInfor = ulList.bus[ulList.bus.bus_list[k]][i].split(":");
         var tempTimeInfor = getTodayTime().split(":");
         var tempDateInfor = getTodayDate().split("-");
         var date1 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempTimeInfor[0], tempTimeInfor[1]);
@@ -226,12 +226,12 @@ router.post('/api/post/nodejs-api', function(req, res) {
         } else if(elapsedMin < 0) {
           tempBusMsg += Math.abs(elapsedMin) + "분 전 출발";
           if(i == 0) tempBusMsg + " (첫차, 월평역 출발)";
-          else if(i == ulList.bus[ulList.bus_list[k]].length-1) tempBusMsg + " (막차)";
+          else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg + " (막차)";
           tempBusAct.push(tempBusMsg);
         } else {
           tempBusMsg += elapsedMin + "분 후 운행예정";
           if(i == 0) tempBusMsg + " (첫차, 월평역 출발)";
-          else if(i == ulList.bus[ulList.bus_list[k]].length-1) tempBusMsg + " (막차)";
+          else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg + " (막차)";
           tempBusWait.push(tempBusMsg);
         }
       }
@@ -242,7 +242,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
 
       tempBusList.push({
         "textCard": {
-          "text": ["[ " + ulList.bus_list[k] + " ]",
+          "text": ["[ " + ulList.bus.bus_list[k] + " ]",
           "\n# 운행대기",
           tempBusWait.join("\n"),
           "\n# 운행중",
@@ -257,13 +257,14 @@ router.post('/api/post/nodejs-api', function(req, res) {
     res.status(200).json({
       "version": "2.0",
       "template": {
-          "outputs": [
-              {
-                  "simpleText": {
-                      "text": "간단한 텍스트 요소입니다."
-                  }
-              }
-          ]
+        "outputs": [
+          {
+            "carousel": {
+              "type": "itemCard",
+              "items": tempBusList
+            }
+          }
+        ]
       }
     });
 
