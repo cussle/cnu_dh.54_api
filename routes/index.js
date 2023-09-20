@@ -216,7 +216,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
       var elapsedMSec = date2.getTime() - date1.getTime(); 
       var elapsedMin = elapsedMSec / 1000 / 60;
 
-      var tempBusMsg = tempBusInfor[0] + ":" + tempBusInfor[1] + " - ";
+      var tempBusMsg = "[" + tempBusInfor[0] + ":" + tempBusInfor[1] + "] ";
       if(elapsedMin < -60) continue;
       else if(elapsedMSec < -30) {
         tempBusMsg += elapsedMin + "분 전 운행종료";
@@ -225,12 +225,12 @@ router.post('/api/post/nodejs-api', function(req, res) {
         tempBusMsg += elapsedMin + "분 전 출발";
         if(i == 0) tempBusMsg + " (첫차, 월평역 출발)";
         else if(i == ulList.bus["A-1"].length-1) tempBusMsg + " (막차)";
-        tempBusEnd.push(tempBusMsg);
+        tempBusAct.push(tempBusMsg);
       } else {
         tempBusMsg += elapsedMin + "분 후 운행예정";
         if(i == 0) tempBusMsg + " (첫차, 월평역 출발)";
         else if(i == ulList.bus["A-1"].length-1) tempBusMsg + " (막차)";
-        tempBusEnd.push(tempBusMsg);
+        tempBusWait.push(tempBusMsg);
       }
 
       if(tempBusWait.length == 0) tempBusWait.push("당일 운행 예정인 버스가 없습니다.");
