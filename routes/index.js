@@ -260,7 +260,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
         "outputs": [
           {
             "carousel": {
-              "type": "itemCard",
+              "type": "textCard",
               "items": tempBusList
             }
           }
