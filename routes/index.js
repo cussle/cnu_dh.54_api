@@ -84,11 +84,25 @@ router.post('/api/post/nodejs-api', function(req, res) {
     res.status(200).json(ulList);
   } else if(inputType == "lib") { // 도서관 JSON
     var tempList = [];
+    var libImgList = ["https://library.cnu.ac.kr/image/ko/local/guide/floorB1.png",
+    "https://clicker.cnu.ac.kr/clicker/users/chungnam/images/2020_B2LearningCommons.png",
+    "https://clicker.cnu.ac.kr/clicker/users/chungnam/images/2020_B2CarrelZone.png",
+    "https://library.cnu.ac.kr/image/ko/local/guide/floor1.png",
+    "https://clicker.cnu.ac.kr/clicker/users/chungnam/images/2020_library_F2_redingroom2_A.png",
+    "https://clicker.cnu.ac.kr/clicker/users/chungnam/images/2020_library_F2_redingroom2_B.png",
+    "https://clicker.cnu.ac.kr/clicker/users/chungnam/images/2020_library_F2_redingroom2_notebook.png",
+    "https://clicker.cnu.ac.kr/clicker/users/chungnam/images/2020_library_F2_redingroom3_A.png",
+    "https://clicker.cnu.ac.kr/clicker/users/chungnam/images/2020_library_F2_redingroom3_B.png"];
     for(var i = 0; i < 9; i++) {
       tempList[i] = {
         "imageTitle": {
           "title": ulList.lib.name_[i],
           "description": getTime() + " 기준"
+        },
+        "thumbnail": {
+            "imageUrl": libImgList[i],
+            "width": 800,
+            "height": 400
         },
         "itemList": [
             {
