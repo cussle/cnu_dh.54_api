@@ -261,12 +261,30 @@ router.post('/api/post/nodejs-api', function(req, res) {
           {
             "carousel": {
               "type": "textCard",
-              "items": tempBusList
+              "items": [{
+                "textCard": {
+                  "text": ["[ " + ulList.bus_list[k] + " ]",
+                  "\n# 운행대기",
+                  "\n# 운행중",
+                  "\n# 운행종료",
+                  ].join("\n")
+                }
+              },
+              {
+                "textCard": {
+                  "text": ["[ " + ulList.bus_list[k] + " ]",
+                  "\n# 운행대기",
+                  "\n# 운행중",
+                  "\n# 운행종료",
+                  ].join("\n")
+                }
+              }]
             }
           }
         ]
       }
     });
+
   } else {
     res.status(200).json({
       "version": "2.0",
