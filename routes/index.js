@@ -59,6 +59,11 @@ function getTime() {
   ].join("");
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -73,6 +78,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
   var inputType = req.body.action.detailParams.inputType.value;
 
   getHtml();
+  sleep(1234);
 
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
