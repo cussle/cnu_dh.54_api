@@ -118,7 +118,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
           {
             "carousel": {
               "type": "itemCard",
-              "items": tempList
+              "items": [[tempList[0], tempList[1], tempList[2]], [tempList[3], tempList[4], tempList[5]], [tempList[6], tempList[7], tempList[8]]]
             }
           }
         ]
