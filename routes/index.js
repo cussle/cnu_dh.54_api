@@ -209,8 +209,8 @@ router.post('/api/post/nodejs-api', function(req, res) {
           }
         ],
         "quickReplies": [
-          {"label": "초기화면", "action": "message", "messageText": "초기화면"},
-          {"label": "뒤로가기", "action": "message", "messageText": "각종 정보 확인하기"}
+          {"label": "초기화면", "action": "block", "messageText": "초기화면", "blockId": "6502ac4d23f0db0378b89f3a"},
+          {"label": "뒤로가기", "action": "block", "messageText": "각종 정보 확인하기", "blockId": "5c753aa405aaa75509eaa970"}
         ]
       }
     });
@@ -233,7 +233,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
         var tempBusMsg = "[" + tempBusInfor[0] + ":" + tempBusInfor[1] + "] ";
         if(elapsedMin < -60) continue;
         else if(elapsedMin < -30) {
-          tempBusMsg += "약" + Math.abs(30+elapsedMin) + "분 전 운행종료";
+          tempBusMsg += "약 " + Math.abs(30+elapsedMin) + "분 전 운행종료";
           tempBusEnd.push(tempBusMsg);
         } else if(elapsedMin < 0) {
           tempBusMsg += Math.abs(elapsedMin) + "분 전 출발";
@@ -276,13 +276,13 @@ router.post('/api/post/nodejs-api', function(req, res) {
           }
         ],
         "quickReplies": [
-          {"label": "순환버스 시간표(전체)", "action": "message", "messageText": "순환버스 시간표"},
-          {"label": "A노선", "action": "message", "messageText": "A노선"},
-          {"label": "B노선", "action": "message", "messageText": "B노선"},
-          {"label": "특별노선", "action": "message", "messageText": "특별노선"},
-          {"label": "대덕-보운", "action": "message", "messageText": "대덕-보운 노선"},
-          {"label": "초기화면", "action": "message", "messageText": "초기화면"},
-          {"label": "뒤로가기", "action": "message", "messageText": "각종 정보 확인하기"}
+          {"label": "순환버스 시간표(전체)", "action": "block", "messageText": "순환버스 시간표", "blockId": "64fe6ba91cebbc71ec59033a"},
+          {"label": "A노선", "action": "block", "messageText": "A노선", "blockId": "5c6fd10ee821274ba7895fce"},
+          {"label": "B노선", "action": "block", "messageText": "B노선", "blockId": "5c70000805aaa75509ea8c7b"},
+          {"label": "특별노선", "action": "block", "messageText": "특별노선", "blockId": "64fe699680900b5cc5da4565"},
+          {"label": "대덕-보운", "action": "block", "messageText": "대덕-보운 노선", "blockId": "5c70017c5f38dd01ebc0a299"},
+          {"label": "초기화면", "action": "block", "messageText": "초기화면", "blockId": "6502ac4d23f0db0378b89f3a"},
+          {"label": "뒤로가기", "action": "block", "messageText": "각종 정보 확인하기", "blockId": "5c753aa405aaa75509eaa970"}
         ]
       }
     });
