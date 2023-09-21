@@ -210,7 +210,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
         ],
         "quickReplies": [
           {"label": "초기화면", "action": "message", "messageText": "초기화면"},
-          {"label": "뒤로가기", "action": "block", "messageText": "뒤로가기", "blockid": "5c753aa405aaa75509eaa970"}
+          {"label": "뒤로가기", "action": "message", "messageText": "각종 정보 확인하기"}
         ]
       }
     });
@@ -282,7 +282,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
           {"label": "특별노선", "action": "message", "messageText": "특별노선"},
           {"label": "대덕-보운", "action": "message", "messageText": "대덕-보운 노선"},
           {"label": "초기화면", "action": "message", "messageText": "초기화면"},
-          {"label": "뒤로가기", "action": "block", "messageText": "뒤로가기", "blockid": "5c6fcd7705aaa75509ea8b97"}
+          {"label": "뒤로가기", "action": "message", "messageText": "각종 정보 확인하기"}
         ]
       }
     });
