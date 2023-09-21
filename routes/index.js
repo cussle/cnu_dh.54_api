@@ -283,7 +283,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
         var tempBusMsg = "[" + tempBusInfor[0] + ":" + tempBusInfor[1] + "] ";
         if(elapsedMin < -60) continue;
         else if(elapsedMin < -30) {
-          tempBusMsg += Math.abs(elapsedMin) + "분 전 운행종료";
+          tempBusMsg += "약" + Math.abs(30+elapsedMin) + "분 전 운행종료";
           tempBusEnd.push(tempBusMsg);
         } else if(elapsedMin < 0) {
           tempBusMsg += Math.abs(elapsedMin) + "분 전 출발";
