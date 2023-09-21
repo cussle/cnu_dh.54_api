@@ -276,7 +276,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
           }
         ],
         "quickReplies": [
-          {"label": "순환버스 시간표(전체)", "action": "string", "messageText": "순환버스 시간표"},
+          {"label": "순환버스 시간표(전체)", "action": "message", "messageText": "순환버스 시간표"},
           {"label": "A노선", "action": "message", "messageText": "A노선"},
           {"label": "B노선", "action": "message", "messageText": "B노선"},
           {"label": "특별노선", "action": "message", "messageText": "특별노선"},
