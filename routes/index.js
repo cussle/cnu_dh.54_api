@@ -207,64 +207,14 @@ router.post('/api/post/nodejs-api', function(req, res) {
               "items": [tempList[6], tempList[7], tempList[8]]
             }
           }
+        ],
+        "quickReplies": [
+          {"label": "초기화면", "action": "message", "messageText": "초기화면"},
+          {"label": "뒤로가기", "action": "block", "messageText": "뒤로가기", "blockid": "5c753aa405aaa75509eaa970"}
         ]
       }
     });
   } else if(inputType == "bus") { // 버스 JSON
-    // var tempBusList = [];
-    // for(var k = 0; k < ulList.bus.bus_list.length; k++) {
-    //   var tempBusWait = [];
-    //   var tempBusAct = [];
-    //   var tempBusEnd = [];
-
-    //   for(var i = 0; i < ulList.bus[ulList.bus.bus_list[k]].length; i++) {
-    //     var tempBusInfor = ulList.bus[ulList.bus.bus_list[k]][i].split(":");
-    //     var tempTimeInfor = getTodayTime().split(":");
-    //     var tempDateInfor = getTodayDate().split("-");
-    //     var date1 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempTimeInfor[0], tempTimeInfor[1]);
-    //     var date2 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempBusInfor[0], tempBusInfor[1]);
-    //     var elapsedMSec = date2.getTime() - date1.getTime(); 
-    //     var elapsedMin = elapsedMSec / 1000 / 60;
-
-    //     var tempBusMsg = "[" + tempBusInfor[0] + ":" + tempBusInfor[1] + "] ";
-    //     if(elapsedMin < -60) continue;
-    //     else if(elapsedMin < -30) {
-    //       tempBusMsg += Math.abs(elapsedMin) + "분 전 운행종료";
-    //       tempBusEnd.push(tempBusMsg);
-    //     } else if(elapsedMin < 0) {
-    //       tempBusMsg += Math.abs(elapsedMin) + "분 전 출발";
-    //       if(i == 0) tempBusMsg + " (첫차, 월평역 출발)";
-    //       else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg + " (막차)";
-    //       tempBusAct.push(tempBusMsg);
-    //     } else {
-    //       tempBusMsg += elapsedMin + "분 후 운행예정";
-    //       if(i == 0) tempBusMsg + " (첫차, 월평역 출발)";
-    //       else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg + " (막차)";
-    //       tempBusWait.push(tempBusMsg);
-    //     }
-    //   }
-
-    //   if(tempBusWait.length < 1) tempBusWait.push("당일 운행 예정인 버스가 없습니다.");
-    //   if(tempBusAct.length < 1) tempBusAct.push("운행중인 버스가 없습니다.");
-    //   if(tempBusEnd.length < 1) tempBusEnd.push("30분 이내 운행종료된 버스가 없습니다.");
-
-    //   tempBusList.push({
-    //     "textCard": {
-    //       "text": ["[ " + ulList.bus.bus_list[k] + " ]",
-    //       "\n# 운행대기",
-    //       tempBusWait.join("\n"),
-    //       "\n# 운행중",
-    //       tempBusAct.join("\n"),
-    //       "\n# 운행종료",
-    //       tempBusEnd.join("\n")
-    //       ].join("\n")
-    //     }
-    //   });
-    // }
-    //   var tempBusWait = [];
-    //   var tempBusAct = [];
-    //   var tempBusEnd = [];
-
     var tempBusList = [];
     for(var k = 0; k < ulList.bus.bus_list.length; k++) {
       var tempBusWait = [];
@@ -324,6 +274,15 @@ router.post('/api/post/nodejs-api', function(req, res) {
               "items": tempBusList
             }
           }
+        ],
+        "quickReplies": [
+          {"label": "순환버스 시간표(전체)", "action": "string", "messageText": "순환버스 시간표"},
+          {"label": "A노선", "action": "message", "messageText": "A노선"},
+          {"label": "B노선", "action": "message", "messageText": "B노선"},
+          {"label": "특별노선", "action": "message", "messageText": "특별노선"},
+          {"label": "대덕-보운", "action": "message", "messageText": "대덕-보운 노선"},
+          {"label": "초기화면", "action": "message", "messageText": "초기화면"},
+          {"label": "뒤로가기", "action": "block", "messageText": "뒤로가기", "blockid": "5c6fcd7705aaa75509ea8b97"}
         ]
       }
     });
