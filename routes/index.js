@@ -118,9 +118,16 @@ function sleep(ms) {
 
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' + "\n" + getToday()});
-  // res.writeHead(200, {'Content-Type' : 'text/plain'});
-  // res.end(tempBusList.join("\n"));
+  // res.render('index', { title: 'Express' + "\n" + getToday()});
+  res.writeHead(200, {'Content-Type' : 'text/plain'});
+  res.end(["[ A-1 ]",
+  "\n# 운행대기",
+  tempBusWait.join("\n"),
+  "\n# 운행중",
+  tempBusAct.join("\n"),
+  "\n# 운행종료",
+  tempBusEnd.join("\n")
+  ].join("\n"));
 });
 
 router.get('/api/get/nodejs-api', function(req, res) {
@@ -258,6 +265,11 @@ router.post('/api/post/nodejs-api', function(req, res) {
     //   var tempBusAct = [];
     //   var tempBusEnd = [];
 
+
+    var tempBusWait = [];
+    var tempBusAct = [];
+    var tempBusEnd = [];
+    
     for(var i = 0; i < ulList.bus["A-1"].length; i++) {
       var tempBusInfor = ulList.bus["A-1"][i].split(":");
       var tempTimeInfor = getTodayTime().split(":");
@@ -266,7 +278,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
       var date2 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempBusInfor[0], tempBusInfor[1]);
       var elapsedMSec = date2.getTime() - date1.getTime(); 
       var elapsedMin = elapsedMSec / 1000 / 60;
-
+    
       var tempBusMsg = "[" + tempBusInfor[0] + ":" + tempBusInfor[1] + "] ";
       if(elapsedMin < -60) continue;
       else if(elapsedMin < -30) {
@@ -284,7 +296,7 @@ router.post('/api/post/nodejs-api', function(req, res) {
         tempBusWait.push(tempBusMsg);
       }
     }
-
+    
     if(tempBusWait.length < 1) tempBusWait.push("당일 운행 예정인 버스가 없습니다.");
     if(tempBusAct.length < 1) tempBusAct.push("운행중인 버스가 없습니다.");
     if(tempBusEnd.length < 1) tempBusEnd.push("30분 이내 운행종료된 버스가 없습니다.");
