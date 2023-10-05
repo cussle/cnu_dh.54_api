@@ -4,7 +4,6 @@ var router = express.Router();
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-
 let ulList = {};
 ulList.lib = {
   name_: [],
@@ -57,7 +56,6 @@ function getToday() {
   ('0' + (today.getMonth() + 1)).slice(-2),
   "-",
   ('0' + today.getDate()).slice(-2),
-  "-",
   " ",
   ('0' + today.getHours()).slice(-2),
   ":",
@@ -93,6 +91,16 @@ function getTodayTime() {
   ].join("");
 }
 
+function isWeekend() {
+  let curr = new Date();
+  let utc = curr.getTime() + (curr.getTimezoneOffset() * 60 * 1000);
+  let KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+  let today = new Date(utc + KR_TIME_DIFF);
+
+  if((today.getDay() == 0) || (today.getDay() == 6)) return true;
+  else return false;
+}
+
 function minuteToHour(inputMinute) {
   return Math.floor(inputMinute/60) + "hour " + Math.abs(inputMinute%60) + "minute";
 }
@@ -103,22 +111,8 @@ function sleep(ms) {
   });
 }
 
-/* GET home page. */
-// var tempBusRes = [];
-// for(var i = 0; i < ulList.bus["A-1"].length; i++) {
-//   var tempBusInfor = ulList.bus["A-1"][i].split(":");
-//   var tempTimeInfor = getTodayTime().split(":");
-//   var tempDateInfor = getTodayDate().split("-");
-//   var date1 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempTimeInfor[0], tempTimeInfor[1]);
-//   var date2 = new Date(tempDateInfor[0], tempDateInfor[1], tempDateInfor[2], tempBusInfor[0], tempBusInfor[1]);
-//   var elapsedMSec = date2.getTime() - date1.getTime(); 
-//   var elapsedMin = elapsedMSec / 1000 / 60;
-//   tempBusRes.push(ulList.bus["A-1"][i] + "\ndate1 - " + date1  + "\ndate2 - " + date2  + "\ndiff - " + minuteToHour(elapsedMin) + "\n");
-// }
-
 
 router.get('/', function(req, res, next) {
-  // res.render('index', { title: 'Express' + "\n" + getToday()});
   res.writeHead(200, {'Content-Type' : 'text/plain'});
   res.end(["[ A-1 ]",
   "\n# 운행대기",
@@ -222,6 +216,8 @@ router.post('/api/post/nodejs-api', function(req, res) {
       var tempBusEnd = [];
       
       for(var i = 0; i < ulList.bus[ulList.bus.bus_list[k]].length; i++) {
+        if(isWeekend()) break;
+
         var tempBusInfor = ulList.bus[ulList.bus.bus_list[k]][i].split(":");
         var tempTimeInfor = getTodayTime().split(":");
         var tempDateInfor = getTodayDate().split("-");
@@ -237,12 +233,25 @@ router.post('/api/post/nodejs-api', function(req, res) {
           tempBusEnd.push(tempBusMsg);
         } else if(elapsedMin < 0) {
           tempBusMsg += Math.abs(elapsedMin) + "분 전 출발";
-          if(i == 0) tempBusMsg += " (첫차, 월평역 출발)";
-          else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg += " (막차)";
+
+          // 첫차
+          if(i == 0) {
+            tempBusMsg += " (첫차)";
+            // 월평역 출발
+            if((ulList.bus.bus_list[k] == "A-1") || (ulList.bus.bus_list[k] == "B-1") || (ulList.bus.bus_list[k] == "B-2")) {
+              tempBusMsg += "\n → 월평역 출발"
+            }
+          }
+          // 막차
+          else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) {
+            tempBusMsg += " (막차)"; 
+            if(ulList.bus.bus_list[k] == "A-2") tempBusMsg += "\n → 정심화국제문화회관 무정차\n → 유성온천역 하차";
+            else if(ulList.bus.bus_list[k] == "B-2") tempBusMsg += "\n → 정심화국제문화회관 무정차\n → 유성시외버스터미널 하차";
+          }
           tempBusAct.push(tempBusMsg);
         } else if(elapsedMin < 60) {
           tempBusMsg += elapsedMin + "분 후 운행예정";
-          if(i == 0) tempBusMsg += " (첫차, 월평역 출발)";
+          if(i == 0) tempBusMsg += " (첫차)";
           else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg += " (막차)";
           tempBusWait.push(tempBusMsg);
         }
@@ -253,12 +262,12 @@ router.post('/api/post/nodejs-api', function(req, res) {
       if(tempBusEnd.length < 1) tempBusEnd.push("30분 이내 운행종료된 버스가 없습니다.");
 
       tempBusList.push({
-        "text": ["[ " + ulList.bus.bus_list[k] + " ]",
-        "\n# 운행대기",
+        "text": ["🚌 " + ulList.bus.bus_list[k] + " 노선",
+        "\n🟡 운행대기",
         tempBusWait.join("\n"),
-        "\n# 운행중",
+        "\n🟢 운행중",
         tempBusAct.join("\n"),
-        "\n# 운행종료",
+        "\n🔴 운행종료",
         tempBusEnd.join("\n")
         ].join("\n")
       });
