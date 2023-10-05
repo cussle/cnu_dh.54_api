@@ -128,11 +128,10 @@ router.get('/api/get/nodejs-api', function(req, res) {
   res.status(200).json(ulList.lib);
 });
 
-router.post('/api/post/nodejs-api', function(req, res) {
+router.post('/api/post/nodejs-api', async function(req, res) {
   var inputType = req.body.action.detailParams.inputType.value;
 
-  getHtml();
-  sleep(3456);
+  await getHtml();
 
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
