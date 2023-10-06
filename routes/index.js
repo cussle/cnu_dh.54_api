@@ -110,7 +110,9 @@ function minuteToHour(inputMinute) {
     minutes = 60 - Math.abs(minutes);
   }
 
-  if (minutes === 0) {
+  if (hours === 0) {
+    return minutes.toString();
+  } else if (minutes === 0) {
     return hours + "시간";
   } else {
     return hours + "시간 " + minutes;
