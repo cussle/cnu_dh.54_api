@@ -21,7 +21,7 @@ ulList.bus = { // display type - '14:16:24'
   "B-2": ['08:45:00', '08:55:00', '09:25:00', '09:55:00', '10:25:00', '10:55:00', '11:25:00', '12:50:00', '13:20:00', '13:50:00', '14:55:00', '15:55:00', '16:55:00', '17:40:00']
 };
 
-const getHtml = async () => {
+const getLibHtml = async () => {
   try {
     // 1
     const html = await axios.get("https://clicker.cnu.ac.kr/Clicker/k/");
@@ -44,7 +44,7 @@ const getHtml = async () => {
     console.error(error);
   }
 };
-getHtml();
+getLibHtml();
 
 function getToday() {
   let curr = new Date();
@@ -102,26 +102,25 @@ function isWeekend() {
 }
 
 function minuteToHour(inputMinute) {
-  return Math.floor(inputMinute/60) + "hour " + Math.abs(inputMinute%60) + "minute";
-}
+  let hours = Math.floor(inputMinute / 60);
+  let minutes = inputMinute % 60;
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+  if (inputMinute < 0 && minutes !== 0) {
+    hours += 1;
+    minutes = 60 - Math.abs(minutes);
+  }
+
+  if (minutes === 0) {
+    return hours + "시간";
+  } else {
+    return hours + "시간 " + minutes;
+  }
 }
 
 
 router.get('/', function(req, res, next) {
   res.writeHead(200, {'Content-Type' : 'text/plain'});
-  res.end(["[ A-1 ]",
-  "\n# 운행대기",
-  tempBusWait.join("\n"),
-  "\n# 운행중",
-  tempBusAct.join("\n"),
-  "\n# 운행종료",
-  tempBusEnd.join("\n")
-  ].join("\n"));
+  res.end("TEST");
 });
 
 router.get('/api/get/nodejs-api', function(req, res) {
@@ -131,7 +130,7 @@ router.get('/api/get/nodejs-api', function(req, res) {
 router.post('/api/post/nodejs-api', async function(req, res) {
   var inputType = req.body.action.detailParams.inputType.value;
 
-  await getHtml();
+  await getLibHtml();
 
   if(inputType == "all") { // 모든 JSON
     res.status(200).json(ulList);
@@ -227,10 +226,10 @@ router.post('/api/post/nodejs-api', async function(req, res) {
       
         var tempBusMsg = "[" + tempBusInfor[0] + ":" + tempBusInfor[1] + "] ";
         if(elapsedMin < -60) continue;
-        else if(elapsedMin < -30) {
+        else if(elapsedMin <= -30) { // 운행 종료
           tempBusMsg += "약 " + Math.abs(30+elapsedMin) + "분 전 운행종료";
           tempBusEnd.push(tempBusMsg);
-        } else if(elapsedMin < 0) {
+        } else if(elapsedMin <= 0) { // 운행중
           tempBusMsg += Math.abs(elapsedMin) + "분 전 출발";
 
           // 첫차
@@ -248,11 +247,13 @@ router.post('/api/post/nodejs-api', async function(req, res) {
             else if(ulList.bus.bus_list[k] == "B-2") tempBusMsg += "\n → 정심화국제문화회관 무정차\n → 유성시외버스터미널 하차";
           }
           tempBusAct.push(tempBusMsg);
-        } else if(elapsedMin < 60) {
-          tempBusMsg += elapsedMin + "분 후 운행예정";
-          if(i == 0) tempBusMsg += " (첫차)";
-          else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg += " (막차)";
-          tempBusWait.push(tempBusMsg);
+        } else { // 운행대기
+          if(tempBusWait.length < 3) {
+            tempBusMsg += minuteToHour(elapsedMin) + "분 후 운행예정";
+            if(i == 0) tempBusMsg += " (첫차)";
+            else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg += " (막차)";
+            tempBusWait.push(tempBusMsg);
+          }
         }
       }
       
