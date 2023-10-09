@@ -276,7 +276,7 @@ router.post('/api/post/nodejs-api', async function(req, res) {
       if(tempBusEnd.length < 1) tempBusEnd.push("30분 이내 운행종료된 버스가 없습니다.");
 
       tempBusList.push({
-        "text": ["🚌 " + ulList.bus.bus_list[k] + " 노선",
+        "text": ["🚌 " + ulList.bus.bus_list[k] + "호차",
         "\n🟡 운행대기",
         tempBusWait.join("\n"),
         "\n🟢 운행중",
@@ -291,10 +291,18 @@ router.post('/api/post/nodejs-api', async function(req, res) {
       "version": "2.0",
       "template": {
         "outputs": [
+          // A노선
           {
             "carousel": {
               "type": "textCard",
-              "items": tempBusList
+              "items": [tempBusList[0], tempBusList[1]]
+            }
+          },
+          // B노선
+          {
+            "carousel": {
+              "type": "textCard",
+              "items": [tempBusList[2], tempBusList[3]]
             }
           }
         ],
