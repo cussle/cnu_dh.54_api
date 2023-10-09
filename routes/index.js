@@ -97,8 +97,20 @@ function isWeekend() {
   let KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   let today = new Date(utc + KR_TIME_DIFF);
 
+  // 주말(토, 일) 판별
   if((today.getDay() == 0) || (today.getDay() == 6)) return true;
-  else return false;
+  
+  // 공휴일 판별
+  let holidays = [
+    "2023-10-09", // 한글날
+    "2023-12-25", // 성탄절
+    "2024-01-01" // 새해
+  ];
+  for(var holiday of holidays) {
+    if(getTodayDate() == holiday) return true;
+  }
+
+  return false;
 }
 
 function minuteToHour(inputMinute) {
@@ -250,7 +262,7 @@ router.post('/api/post/nodejs-api', async function(req, res) {
           }
           tempBusAct.push(tempBusMsg);
         } else { // 운행대기
-          if(tempBusWait.length < 3) {
+          if(tempBusWait.length < 2) {
             tempBusMsg += minuteToHour(elapsedMin) + "분 후 운행예정";
             if(i == 0) tempBusMsg += " (첫차)";
             else if(i == ulList.bus[ulList.bus.bus_list[k]].length-1) tempBusMsg += " (막차)";
